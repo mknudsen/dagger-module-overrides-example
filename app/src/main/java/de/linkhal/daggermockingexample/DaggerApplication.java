@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dagger.ObjectGraph;
+import timber.log.Timber;
 
 public class DaggerApplication extends Application {
 
@@ -15,30 +16,17 @@ public class DaggerApplication extends Application {
     private ObjectGraph effectiveGraph;
 
     public ObjectGraph getGraph() {
-        initGraphIfNeeded();
         return effectiveGraph;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-    }
 
-    private void initGraph() {
-        defaultGraph = ObjectGraph.create(new DaggerApplicationModule(this));
+        Timber.plant(new Timber.DebugTree());
+
+        defaultGraph = ObjectGraph.create(new DaggerApplicationModule());
         effectiveGraph = defaultGraph;
-    }
-
-    public void inject(final Object object) {
-        initGraphIfNeeded();
-
-        effectiveGraph.inject(object);
-    }
-
-    private void initGraphIfNeeded() {
-        if (defaultGraph == null) {
-            initGraph();
-        }
     }
 
     public List<Object> getActivityOverrideModules() {
@@ -51,8 +39,6 @@ public class DaggerApplication extends Application {
     }
 
     public DaggerApplication addApplicationOverrideModule(final Object module) {
-        initGraphIfNeeded();
-
         effectiveGraph = effectiveGraph.plus(module);
         return this;
     }

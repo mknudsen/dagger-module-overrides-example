@@ -19,14 +19,15 @@ public class MainActivity extends DaggerActivity {
 
     @Inject
     ApplicationService applicationService;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new AlertDialog.Builder(this)
-                .setMessage(activityService.hello() + " " +  applicationService.hello())
+        alertDialog = new AlertDialog.Builder(this)
+                .setMessage(activityService.hello() + " " + applicationService.hello())
                 .setCancelable(true).show();
     }
 
@@ -35,6 +36,13 @@ public class MainActivity extends DaggerActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        alertDialog.dismiss();
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.List;
 
 import dagger.ObjectGraph;
+import timber.log.Timber;
 
 public class DaggerActivity extends AppCompatActivity {
 
@@ -22,14 +23,12 @@ public class DaggerActivity extends AppCompatActivity {
         final List<Object> activityOverrideModules = application.getActivityOverrideModules();
 
         activityObjectGraph = applicationGraph
-                .plus(new ActivityModule(this))
-                .plus(activityOverrideModules.toArray());
+                .plus(new ActivityModule());
 
-//        if (!activityOverrideModules.isEmpty()) {
-//            for (final Object o : activityOverrideModules) {
-//                activityObjectGraph = activityObjectGraph.plus(o);
-//            }
-//        }
+        for(Object o : activityOverrideModules){
+            Timber.d("adding %s to activityObjectGraph", o);
+            activityObjectGraph = activityObjectGraph.plus(o);
+        }
 
         activityObjectGraph.inject(this);
     }

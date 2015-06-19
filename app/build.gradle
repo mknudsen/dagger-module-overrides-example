@@ -64,9 +64,13 @@ dependencies {
         exclude group: 'javax.inject', module: 'javax.inject'
         exclude group: 'javax.annotation', module: 'javax-annotation-api'
     }
+
     androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
+
+    compile 'com.jakewharton.timber:timber:3.1.0'
+
 }
